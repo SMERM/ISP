@@ -1,0 +1,154 @@
+import("stdfaust.lib");
+
+// AMBIX
+// first order
+a0 = 1;
+a1(a,e) = sin(a)*cos(e);
+a2(e) = sin(e);
+a3(a,e) = cos(a)*cos(e);
+// second order
+a4(a,e) = sqrt(3/4)*sin(2*a)*(cos(e))^2; 
+a5(a,e) = sqrt(3/4)*sin(a)*sin(2*e);
+a6(e) = (1/2)*(3*(sin(e))^2-1);
+a7(a,e) = sqrt(3/4)*cos(a)*sin(2*e);
+a8(a,e) = sqrt(3/4)*cos(2*a)*(cos(e))^2;
+// third order
+a9(a,e) = sqrt(5/8)*sin(3*a)*(cos(e))^3;
+a10(a,e) = sqrt(15/4)*sin(2*a)*sin(e)*(cos(e))^2; 
+a11(a,e) = sqrt(3/8)*sin(a)*cos(e)*(5*(sin(e))^2-1);
+a12(e) = (1/2)*sin(e)*(5*(sin(e))^2-3);
+a13(a,e) = sqrt(3/8)*cos(a)*cos(e)*(5*(sin(e))^2-1);
+a14(a,e) = sqrt(15/4)*cos(2*a)*sin(e)*(cos(e))^2; 
+a15(a,e) = sqrt(5/8)*cos(3*a)*(cos(e))^3;
+// fourth order
+a16(a,e) = sqrt(35/64)*sin(4*a)*(cos(e))^4;
+a17(a,e) = sqrt(35/8)*sin(3*a)*sin(e)*(cos(e))^3;
+a18(a,e) = sqrt(5/16)*sin(2*a)*(cos(e))^2*(7*(sin(e))^2-1);
+a19(a,e) = sqrt(5/32)*sin(a)*sin(2*e)*(7*(sin(e))^2-3); 
+a20(e) = 1/8*(35*sin(e)^4-30*sin(e)^2+3);
+a21(a,e) = sqrt(5/32)*cos(a)*sin(2*e)*(7*(sin(e))^2-3); 
+a22(a,e) = sqrt(5/16)*cos(2*a)*(cos(e))^2*(7*(sin(e))^2-1);
+a23(a,e) = sqrt(35/8)*cos(3*a)*sin(e)*(cos(e))^3; 
+a24(a,e) = sqrt(35/64)*cos(4*a)*(cos(e))^4;
+// ENCODERS
+// mono to first order
+mto1o(a,e) = _ <: _*a0,
+                  _*a1(a,e),
+                  _*a2(e),
+                  _*a3(a,e);
+
+// mono to second order
+mto2o(a,e) = _ <: _*a0,
+                  _*a1(a,e),
+                  _*a2(e),
+                  _*a3(a,e),
+                  _*a4(a,e),
+                  _*a5(a,e),
+                  _*a6(e),
+                  _*a7(a,e),
+                  _*a8(a,e);
+
+// mono to third order
+mto3o(a,e) = _ <: _*a0,
+_*a1(a,e),
+_*a2(e),
+_*a3(a,e),
+_*a4(a,e),
+_*a5(a,e),
+_*a6(e),
+_*a7(a,e),
+_*a8(a,e),
+_*a9(a,e),
+_*a10(a,e),
+_*a11(a,e),
+_*a12(e),
+_*a13(a,e),
+_*a14(a,e),
+_*a15(a,e);
+// mono to fourth order
+mto4o(a,e) = _ <: _*a0,
+_*a1(a,e),
+_*a2(e),
+_*a3(a,e),
+_*a4(a,e),
+_*a5(a,e),
+_*a6(e),
+_*a7(a,e),
+_*a8(a,e),
+_*a9(a,e),
+_*a10(a,e),
+_*a11(a,e),
+_*a12(e),
+_*a13(a,e),
+_*a14(a,e),
+_*a15(a,e),
+_*a16(a,e),
+_*a17(a,e),
+_*a18(a,e),
+_*a19(a,e),
+_*a20(e),
+_*a21(a,e),
+_*a22(a,e),
+_*a23(a,e),
+_*a24(a,e);
+
+// VMIC DECODERS 
+vmic1(a,e,pp) = _*a0*(1-pp) + (pp*(
+                                   _*a1(a,e) +
+                                   _*a2(e) +
+                                   _*a3(a,e)
+                                   ));
+
+vmic2(a,e,pp) = _*a0*(1-pp) + (pp*(_*a1(a,e) +
+_*a2(e) +
+_*a3(a,e) +
+_*a4(a,e) +
+_*a5(a,e) +
+_*a6(e) +
+_*a7(a,e) +
+_*a8(a,e)))/2;
+
+vmic3(a,e,pp) = _*a0*(1-pp) + (pp*(_*a1(a,e) +
+_*a2(e) +_*a3(a,e) +
+_*a4(a,e) +
+_*a5(a,e) +
+_*a6(e) +
+_*a7(a,e) +
+_*a8(a,e) +
+_*a9(a,e) +
+_*a10(a,e) +
+_*a11(a,e) +
+_*a12(e) +
+_*a13(a,e) +
+_*a14(a,e) +
+_*a15(a,e)))/3;
+
+vmic4(a,e,pp) = _*a0*(1-pp) + (pp*(_*a1(a,e) + _*a2(e) +
+_*a3(a,e) +
+_*a4(a,e) +
+_*a5(a,e) +
+_*a6(e) +
+_*a7(a,e) +
+_*a8(a,e) +
+_*a9(a,e) +
+_*a10(a,e) +
+_*a11(a,e) +
+_*a12(e) +
+_*a13(a,e) +
+_*a14(a,e) +
+_*a15(a,e) +
+_*a16(a,e) +
+_*a17(a,e) +
+_*a18(a,e) +
+_*a19(a,e) +
+_*a20(e) +
+_*a21(a,e) +
+_*a22(a,e) +
+_*a23(a,e) +
+_*a24(a,e)))/4;
+
+// anello
+aISP1(N,e,p) = par(i,N,vmic1(0-ma.PI*2*i/N,e,p));
+aISP2(N,e,p) = par(i,N,vmic2(0-ma.PI*2*i/N,e,p));
+aISP3(N,e,p) = par(i,N,vmic3(0-ma.PI*2*i/N,e,p));
+aISP4(N,e,p) = par(i,N,vmic4(0-ma.PI*2*i/N,e,p));
