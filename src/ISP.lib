@@ -92,6 +92,45 @@ _*a22(a,e),
 _*a23(a,e),
 _*a24(a,e);
 
+// ORDER SCALER
+// fourth order scaler
+oscaler4(mix) = *(1),
+                 par(i,3,*(min(1,mixmm(mix)))),
+                 par(i,5,*(max(0,(min(2,mixmm(mix))-1)))),
+                 par(i,7,*(max(0,(min(3,mixmm(mix))-2)))),
+                 par(i,9,*(max(0,mixmm(mix)-3)))
+                 with{
+                     mixmm(mix) = mix : max(0) : min(4);
+                 };
+
+// MIXED ORDER ENCODERS
+// mono to fourth order
+mto4om(a,e,m) = _ <: _*a0,
+_*a1(a,e),
+_*a2(e),
+_*a3(a,e),
+_*a4(a,e),
+_*a5(a,e),
+_*a6(e),
+_*a7(a,e),
+_*a8(a,e),
+_*a9(a,e),
+_*a10(a,e),
+_*a11(a,e),
+_*a12(e),
+_*a13(a,e),
+_*a14(a,e),
+_*a15(a,e),
+_*a16(a,e),
+_*a17(a,e),
+_*a18(a,e),
+_*a19(a,e),
+_*a20(e),
+_*a21(a,e),
+_*a22(a,e),
+_*a23(a,e),
+_*a24(a,e) : oscaler4(mix);
+
 // VMIC DECODERS 
 vmic1(a,e,pp) = _*a0*(1-pp) + (pp*(
                                    _*a1(a,e) +
