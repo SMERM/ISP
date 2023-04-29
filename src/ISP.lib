@@ -191,3 +191,15 @@ aISP1(N,e,p) = par(i,N,vmic1(0-ma.PI*2*i/N,e,p));
 aISP2(N,e,p) = par(i,N,vmic2(0-ma.PI*2*i/N,e,p));
 aISP3(N,e,p) = par(i,N,vmic3(0-ma.PI*2*i/N,e,p));
 aISP4(N,e,p) = par(i,N,vmic4(0-ma.PI*2*i/N,e,p));
+
+// STEREO
+// SDMX
+nsum = +/sqrt(2);
+ndif = -/sqrt(2);
+sdmx = _ , _ <: nsum, ndif;
+
+// ms to ambix 1
+mspola1(m,s) = m <: *(a0g), s, *(sin(a2g)), *(cos(a2g));
+
+// lr to ambix 1
+lr2a1 = sdmx <: mspola1;
